@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .hide {
+            display: none;
+        }
+
+        #text {
+            margin-top: 20px;
+            width: 100px;
+            height: 100px;
+            background-color: silver;
+        }
+    </style>
+</head>
+<body>
+<div id="text"></div>
+<script>
+    // - Створити довільний елемент з id = text та створити кнопку.Використовуючи JavaScript, зробіть так, щоб при натисканні на кнопку зникав елемент з id="text".
+    const div = document.getElementById('text');
+
+    const toggle = document.createElement('button');
+    toggle.innerText = 'show/hide div';
+
+    // у мене кнопка не просто ховає елемент, але і дозволяє йому знову з'явитися
+    // якщо ж умова строга то просто замість toggle треба написати add і воно буде тільки зникати
+    toggle.onclick = () => div.classList.toggle('hide');
+
+    document.body.append(toggle, div);
+</script>
+</body>
+</html>

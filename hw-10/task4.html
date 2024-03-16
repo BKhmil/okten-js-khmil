@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    //     зробити масив на 100 об'єктів та дві кнопки prev next
+    // при завантажені сторінки з'являються перші 10 об'єктів.
+    //     При натисканні next виводяться настпні 10 об'єктів
+    // При натисканні prev виводяться попередні 10 об'єктів
+    const arr = [];
+
+    for (let i = 1; i <= 100; ++i) {
+        arr[i - 1] = i;
+    }
+
+    const prev = document.createElement('button');
+    prev.innerText = 'prev';
+
+    const next = document.createElement('button');
+    next.style.marginLeft = '40px';
+    next.innerText = 'next';
+
+    const root = document.createElement('div');
+    root.innerText = JSON.stringify(arr.slice(0, 10));
+
+    document.body.append(prev, next, root);
+
+
+    // функціонал перемикання
+    let globalStartIndex = 0;
+    let globalEndIndex = 10;
+
+    const changeContent = state => {
+        switch (state) {
+            case 'prev': {
+                let arrPart = JSON.parse(root.innerText);
+
+                if (arrPart[0] === arr[0]) {
+                    alert('oops, try to press "NEXT" button');
+                } else {
+                    globalStartIndex -= 10;
+                    globalEndIndex -= 10;
+                    root.innerText = JSON.stringify(arr.slice(globalStartIndex, globalEndIndex));
+                }
+            }
+                break;
+
+            case 'next': {
+                let arrPart = JSON.parse(root.innerText);
+
+                if (arrPart[arrPart.length - 1] === arr[arr.length - 1]) {
+                    alert('oops, try to press "PREV" button');
+                } else {
+                    globalStartIndex += 10;
+                    globalEndIndex += 10;
+                    root.innerText = JSON.stringify(arr.slice(globalStartIndex, globalEndIndex));
+                }
+            }
+                break;
+
+            default:
+                alert('incorrect state');
+                break;
+        }
+    };
+
+    prev.onclick = () => changeContent('prev');
+    next.onclick = () => changeContent('next');
+</script>
+</body>
+</html>

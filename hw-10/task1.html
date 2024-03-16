@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // Стоврити форму з трьома полями для name,sruname,age та кнопкою. При натисканні на кнопку зчитати данні з полів, та вивести об'єкт в документ. Іншими словами : заповниои форму, натиснули кнопку, під формою з'явився блок з вашим об'єктом
+    // ==========================
+    const form = document.createElement('form');
+
+    const inputName = document.createElement('input');
+    inputName.setAttribute('name', 'userName');
+    inputName.placeholder = 'name';
+
+    const inputSurname = document.createElement('input');
+    inputSurname.setAttribute('name', 'userSurname');
+    inputSurname.placeholder = 'surname';
+
+    const inputAge = document.createElement('input');
+    inputAge.setAttribute('name', 'userAge');
+    inputAge.placeholder = 'age';
+
+    const btnSend = document.createElement('button');
+    btnSend.innerText = 'send';
+
+    form.append(inputName, inputSurname, inputAge, btnSend);
+    document.body.appendChild(form);
+
+    form.onsubmit = function (e) {
+        e.preventDefault();
+
+        const divShowFieldsValues = document.createElement('div');
+        divShowFieldsValues.innerText = `
+        Name: ${this.userName.value},
+        Surname: ${this.userSurname.value},
+        Age: ${this.userAge.value}
+    `;
+
+        document.body.appendChild(divShowFieldsValues);
+    };
+</script>
+</body>
+</html>

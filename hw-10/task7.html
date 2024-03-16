@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .flex {
+            width: fit-content;
+            display: flex;
+            flex-wrap: wrap;
+            border: 3px solid red;
+            padding: 20px;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .cell {
+            border: 2px solid black;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<script>
+    // *** Створити 3 інпута та кнопку. Один визначає кількість рядків, другий - кількість ячеєк, третій вмиіст ячеєк.
+    //     При натисканні кнопки, вся ця інформація зчитується і формується табличка, з відповідним вмістом.
+    // (Додатковачастина для завдання)
+    const inputRows = document.createElement('input');
+    inputRows.placeholder = 'rows amount';
+
+    const inputCells = inputRows.cloneNode();
+    inputCells.placeholder = 'cells amount';
+
+    const inputContent = inputRows.cloneNode();
+    inputContent.placeholder = 'cells content';
+
+    const btnBuild = document.createElement('button');
+    btnBuild.innerText = 'build the table';
+    btnBuild.onclick = () => {
+        if (!inputRows.value || !inputCells.value || !inputContent.value || !parseInt(inputRows.value) || !parseInt(inputCells.value) || +inputRows.value <= 0 || +inputCells.value <= 0) {
+            // до цього я в декількох завданнях використовував alert()
+            // але певно краще все-таки будувати елемент
+            const message = document.createElement('div');
+            message.innerText = 'Error!!! Some field has incorrect value';
+            document.body.appendChild(message);
+
+            setTimeout(() => message.remove(), 3000);
+        } else {
+            const wrapper = document.createElement('div');
+            document.body.appendChild(wrapper);
+
+            let rows = +inputRows.value;
+            let cells = +inputCells.value;
+
+            for (let i = 0; i < rows; ++i) {
+                const row = document.createElement('div');
+                row.classList.add('flex');
+                wrapper.appendChild(row);
+
+                for (let j = 0; j < cells; ++j) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.innerText = inputContent.value;
+
+                    row.appendChild(cell);
+                }
+            }
+        }
+    };
+
+    // щоправда ця кнопка не передбачає перевірки на те що останній дочірній елемент у body це наше таблиця
+    // тому натискати потрібно тільки після побудови таблиці
+    // але думаю це Ви мені вже пробачите
+    const btnRemoveTable = document.createElement('button');
+    btnRemoveTable.innerText = 'remove table';
+    btnRemoveTable.onclick = () => document.body.lastChild.remove();
+
+    document.body.append(inputRows, inputCells, inputContent, btnBuild, btnRemoveTable);
+</script>
+</body>
+</html>

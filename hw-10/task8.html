@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .root {
+            font-size: 32px;
+        }
+    </style>
+</head>
+<body>
+<div class="root">100 грн</div>
+<script>
+    // *** (подібне було вище, але...будьте уважні в другій частині) створити сторінку з довільним блоком, в середині якого є значення "100грн"
+    // при перезавантаженні сторінки до значаення додається по 10грн, але !!!
+    //     зміна ціни відбувається тільки на перезавантаження, які відбулись пізніше ніж 10 секунд після попереднього.
+    //     При перезавантаженні, яке відбулось раніше ніж минуло 10 секунд - нічого не відбувається
+    window.addEventListener('DOMContentLoaded', () => {
+        const root = document.querySelector('.root');
+
+        if (!sessionStorage.getItem('futureAmount')) {
+            sessionStorage.setItem('futureAmount', JSON.stringify({amount: String(parseInt(root.innerText)), time: Date.now()}));
+        } else {
+            if (Date.now() - +JSON.parse(sessionStorage.getItem('futureAmount')).time >= 10000) {
+
+                const {amount, time} = JSON.parse(sessionStorage.getItem('futureAmount'));
+
+                root.innerText = (+amount + 10) + ' грн';
+
+                sessionStorage.setItem('futureAmount', JSON.stringify({amount: String(+amount + 10), time: Date.now()}));
+            } else {
+                root.innerText = JSON.parse(sessionStorage.getItem('futureAmount')).amount + ' грн';
+            }
+        }
+    });
+    // я в шоці від самого завдання і свого рішення, але працює
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .root {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .item {
+            width: 300px;
+            border: 3px solid black;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .forh2 {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<script>
+    class Item {
+        constructor({
+                        id,
+                        date
+                    }, cssClasses, rootElement) {
+            this.id = id;
+            this.date = date;
+            this.cssClasses = cssClasses;
+            this.rootElement = rootElement;
+        }
+
+        build() {
+            const divItem = document.createElement('div');
+            divItem.classList.add(this.cssClasses[0]);
+
+            const h2Id = document.createElement('h2');
+            h2Id.classList.add(this.cssClasses[1]);
+            h2Id.innerText = 'Session id: ' + this.id;
+
+            // тут cloneNode() дозволяє мені клонувати не тільки елемент, а й його css класи
+            const h2Date = h2Id.cloneNode();
+            h2Date.innerText = 'Session date: ' + this.date.slice(0, 10);
+
+            const h2Time = h2Id.cloneNode();
+            h2Time.innerText = 'Session time: ' + this.date.slice(this.date.indexOf('T') + 1, this.date.length - 1);
+
+            // appendings
+            divItem.append(h2Id, h2Date, h2Time);
+            this.rootElement.appendChild(divItem);
+        }
+    }
+
+    const root = document.createElement('div');
+    root.classList.add('root');
+    document.body.appendChild(root);
+
+    if (!localStorage.getItem('sessions')) {
+        alert('Local storage is empty');
+    } else {
+        JSON.parse(localStorage.getItem('sessions')).forEach(item => {
+            new Item(item, ['item', 'forh2'], root).build();
+        });
+    }
+</script>
+</body>
+</html>
