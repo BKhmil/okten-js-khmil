@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .root {
+            margin: 0 auto;
+            width: 40vw;
+        }
+
+        .item {
+            border: 5px solid red;
+            margin: 10px;
+            padding: 5px;
+            width: 100%;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        .field {
+            padding: 5px 0;
+            border-bottom: 1px solid red;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<script>
+    // - взяти https://dummyjson.com/docs/recipes та вивести інформацію про всі рецепти. Інгредієнти повинні бути список під час відображення.
+    const root = document.createElement('div');
+    root.classList.add('root');
+    document.body.appendChild(root);
+
+    const showReceipeData = parentHTML => {
+        fetch('https://dummyjson.com/recipes')
+            .then(response => response.json())
+            .then(({recipes}) => {
+                recipes.forEach(receipe => {
+                    const difficulties = {
+                        easy: 'lightgreen',
+                        medium: 'yellow'
+                    };
+
+                    //wrapper
+                    const item = document.createElement('div');
+                    item.classList.add('item');
+
+                    // fields
+                    const divId = document.createElement('div');
+                    divId.classList.add('field');
+                    divId.innerText = 'id: ' + receipe.id;
+                    item.appendChild(divId);
+
+                    const divName = document.createElement('div');
+                    divName.classList.add('field');
+                    divName.innerText = 'name: ' + receipe.name;
+                    item.appendChild(divName);
+
+                            // ingredients
+                    const divIngredientsWrapper = document.createElement('div');
+                    divIngredientsWrapper.classList.add('field');
+
+                    const divIngredientsWord = document.createElement('div');
+                    divIngredientsWord.innerText = 'ingredients : ';
+
+                    const ul = document.createElement('ul');
+                    receipe.ingredients.forEach(elem => {
+                        const li = document.createElement('li');
+                        li.innerText = elem;
+
+                        ul.appendChild(li);
+                    });
+
+                    divIngredientsWrapper.append(divIngredientsWord, ul);
+                    item.appendChild(divIngredientsWrapper);
+                            // end
+
+                    const p = document.createElement('p');
+                    p.classList.add('field');
+                    p.innerText = 'instruction: ' + receipe.instructions.join(' ');
+                    item.appendChild(p);
+
+                    const divPrepTimeMins = document.createElement('div');
+                    divPrepTimeMins.classList.add('field');
+                    divPrepTimeMins.innerText = 'prepTimeMinutes: ' + receipe.prepTimeMinutes;
+                    item.appendChild(divPrepTimeMins);
+
+                    const divCookTimeMins = document.createElement('div');
+                    divCookTimeMins.classList.add('field');
+                    divCookTimeMins.innerTExt = 'cookTimeMinutes: ' + receipe.cookTimeMinutes;
+                    item.appendChild(divCookTimeMins);
+
+                    const divServings = document.createElement('div');
+                    divServings.classList.add('field');
+                    divServings.innerText = 'servings: ' + receipe.servings;
+                    item.appendChild(divServings);
+
+                            // difficulty
+                    const divDifficultyWrapper = document.createElement('div');
+                    divDifficultyWrapper.classList.add('field');
+
+                    const spanDifficultyWord = document.createElement('span');
+                    spanDifficultyWord.innerText = 'difficulty: ';
+
+                    const spanDifficultyValue = document.createElement('span');
+                    spanDifficultyValue.innerText = receipe.difficulty;
+                    spanDifficultyValue.style.color = 'purple';
+                    spanDifficultyValue.style.backgroundColor = receipe.difficulty === 'Easy' ? difficulties.easy : difficulties.medium;
+
+                    divDifficultyWrapper.append(spanDifficultyWord, spanDifficultyValue);
+                    item.appendChild(divDifficultyWrapper);
+                            // end
+
+                    const divCuisine = document.createElement('div');
+                    divCuisine.classList.add('field');
+                    divCuisine.innerText = 'cuisine: ' + receipe.cuisine;
+                    item.appendChild(divCuisine);
+
+                    const divCaloriesPerServing = document.createElement('div');
+                    divCaloriesPerServing.classList.add('field');
+                    divCaloriesPerServing.innerText = 'caloriesPerServing: ' + receipe.caloriesPerServing;
+                    item.appendChild(divCaloriesPerServing);
+
+                    const divTags = document.createElement('div');
+                    divTags.classList.add('field');
+                    divTags.innerText = 'tags: #' + receipe.tags.join(' ').replaceAll(' ', '#');
+                    item.appendChild(divTags);
+
+                    const divUserId = document.createElement('div');
+                    divUserId.innerText = 'userId: ' + receipe.userId;
+                    item.appendChild(divUserId);
+
+                    const img = document.createElement('img');
+                    img.src = receipe.image;
+                    img.alt = 'image/alt';
+                    item.appendChild(img);
+
+                    const divRating = document.createElement('div');
+                    divRating.classList.add('field');
+                    divRating.innerText = receipe.rating + '★';
+                    item.appendChild(divRating);
+
+                    const divReviewCount = document.createElement('div');
+                    divReviewCount.classList.add('field');
+                    divReviewCount.innerText = 'reviewCount: ' + receipe.reviewCount;
+                    item.appendChild(divReviewCount);
+
+                    const divMealType = document.createElement('div');
+                    divMealType.innerText = 'mealType: ' + (receipe.mealType.length > 1 ? receipe.mealType.join(', ') : receipe.mealType[0]);
+                    item.appendChild(divMealType);
+
+                    parentHTML.appendChild(item);
+                });
+        });
+    };
+
+    showReceipeData(root);
+</script>
+</body>
+</html>
